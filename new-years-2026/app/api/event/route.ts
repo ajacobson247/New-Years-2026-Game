@@ -36,20 +36,22 @@ export async function POST(request: Request) {
 
   const supabase = getSupabaseAnonServerClient();
 
-  const { error } = await supabase.from("events").insert({
-    type: payload.type,
-    clue: payload.clue ?? null,
-    player_id: playerId,
-    player_name: playerName,
-    user_agent: userAgent,
-  });
+  if (playerId) {
+    const { error } = await supabase.from("events").insert({
+      type: payload.type,
+      clue: payload.clue ?? null,
+      player_id: playerId,
+      player_name: playerName,
+      user_agent: userAgent,
+    });
 
-  if (error) {
-    return NextResponse.json(
-      { error: "Insert failed", details: error.message },
-      { status: 500 }
-    );
+    if (error) {
+      return NextResponse.json(
+        { error: "Insert failed", details: error.message },
+        { status: 500 }
+      );
+    }
   }
-
+  
   return NextResponse.json({ ok: true });
 }
