@@ -6,7 +6,7 @@ export default function Clue1() {
     console.log("Submitted answer:", answer);
 
     if (answer.trim().toLowerCase() === "under the lamp") {
-      window.location.href = "/clue_2";
+      window.location.href = "/clue_3";
     } else {
       alert("Incorrect answer. Please try again.");
     }
