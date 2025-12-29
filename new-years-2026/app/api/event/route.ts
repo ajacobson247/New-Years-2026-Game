@@ -2,7 +2,11 @@ import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 
 import { getSupabaseAnonServerClient } from "@/lib/supabase/anon-server";
-import { ensurePlayerIdCookie, getPlayerNameFromCookies } from "@/lib/server/playerCookies";
+import {
+  ensurePlayerIdCookie,
+  getPlayerNameFromCookies,
+  setPlayerProgressCookie,
+} from "@/lib/server/playerCookies";
 
 type EventType = "view_home" | "view_clue" | "finish";
 
@@ -31,12 +35,16 @@ export async function POST(request: Request) {
   const playerId = cookiePlayerId ?? payload.playerId ?? null;
   const playerName = cookiePlayerName ?? payload.playerName?.trim() ?? null;
 
+  if (payload.type === "view_clue" && payload.clue) {
+    await setPlayerProgressCookie(`/${payload.clue}`);
+  }
+
   const headerBag = await headers();
   const userAgent = headerBag.get("user-agent") ?? null;
 
   const supabase = getSupabaseAnonServerClient();
 
-  if (playerId) {
+  if (playerId != null && playerId !== "") {
     const { error } = await supabase.from("events").insert({
       type: payload.type,
       clue: payload.clue ?? null,
@@ -52,6 +60,6 @@ export async function POST(request: Request) {
       );
     }
   }
-  
+
   return NextResponse.json({ ok: true });
 }

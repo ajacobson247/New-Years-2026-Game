@@ -2,7 +2,11 @@
 
 import { redirect } from "next/navigation";
 
-import { ensurePlayerIdCookie, setPlayerNameCookie } from "@/lib/server/playerCookies";
+import {
+  ensurePlayerIdCookie,
+  setPlayerNameCookie,
+  setPlayerProgressCookie,
+} from "@/lib/server/playerCookies";
 
 type SetupState = { error?: string };
 
@@ -14,6 +18,7 @@ export async function setupTeam(_prev: SetupState, formData: FormData): Promise<
 
   await ensurePlayerIdCookie();
   await setPlayerNameCookie(teamName);
+  await setPlayerProgressCookie("/clue_1");
 
   redirect("/clue_1");
 }

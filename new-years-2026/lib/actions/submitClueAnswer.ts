@@ -4,7 +4,11 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { getSupabaseAnonServerClient } from "@/lib/supabase/anon-server";
-import { ensurePlayerIdCookie, getPlayerNameFromCookies } from "@/lib/server/playerCookies";
+import {
+  ensurePlayerIdCookie,
+  getPlayerNameFromCookies,
+  setPlayerProgressCookie,
+} from "@/lib/server/playerCookies";
 
 type SubmitConfig = {
   clue: string;
@@ -72,5 +76,6 @@ export async function submitClueAnswer(
     return { error: "Incorrect — try again." };
   }
 
+  await setPlayerProgressCookie(config.nextHref);
   redirect(config.nextHref);
 }

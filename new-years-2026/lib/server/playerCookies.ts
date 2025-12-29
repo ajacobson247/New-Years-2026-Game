@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 
 const PLAYER_ID_COOKIE = "ny26_player_id";
 const PLAYER_NAME_COOKIE = "ny26_player_name";
+const PLAYER_PROGRESS_COOKIE = "ny26_player_progress";
 
 export async function getPlayerIdFromCookies() {
   const cookieStore = await cookies();
@@ -43,6 +44,30 @@ export async function setPlayerNameCookie(name: string) {
 
   const secure = process.env.NODE_ENV === "production";
   cookieStore.set(PLAYER_NAME_COOKIE, trimmed.slice(0, 64), {
+    httpOnly: true,
+    sameSite: "lax",
+    secure,
+    path: "/",
+    maxAge: 60 * 60 * 8,
+  });
+}
+
+export async function getPlayerProgressFromCookies() {
+  const cookieStore = await cookies();
+  const raw = cookieStore.get(PLAYER_PROGRESS_COOKIE)?.value ?? "";
+  const value = raw.trim();
+  return value ? value : null;
+}
+
+export async function setPlayerProgressCookie(path: string) {
+  const cookieStore = await cookies();
+  const trimmed = path.trim();
+  if (!trimmed) return;
+
+  const secure = process.env.NODE_ENV === "production";
+  const normalized = trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
+
+  cookieStore.set(PLAYER_PROGRESS_COOKIE, normalized.slice(0, 128), {
     httpOnly: true,
     sameSite: "lax",
     secure,
