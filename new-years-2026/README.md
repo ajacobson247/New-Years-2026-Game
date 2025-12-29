@@ -20,6 +20,32 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Analytics + Admin (Party QR Game)
+
+This app includes:
+
+- Vercel Web Analytics for overall traffic and unique visitors.
+- A simple Supabase-backed event log (page scans/views) plus an `/admin` dashboard.
+
+### Supabase setup
+
+1. Create a Supabase project.
+2. Run the SQL in [supabase/schema.sql](supabase/schema.sql).
+3. Add these env vars (locally in `.env.local` and in Vercel Project → Settings → Environment Variables):
+
+- `SUPABASE_URL`
+- `SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY` (server-only; used by `/admin`)
+
+### Admin auth
+
+The `/admin` page is protected with Basic Auth if you set:
+
+- `ADMIN_USER`
+- `ADMIN_PASS`
+
+If those are not set, `/admin` is not protected (handy for local dev).
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
