@@ -1,29 +1,49 @@
-'use client';
-import React, { useState } from "react";
+"use client";
 
-export default function ClueInputField({ onSubmit }: { onSubmit: (value: string) => void }) {
+import React, { useEffect, useState } from "react";
+import { useFormState, useFormStatus } from "react-dom";
+
+import { getOrCreatePlayerId } from "@/lib/client/player";
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="mt-3 rounded border border-black/10 bg-white/60 px-4 py-2 font-semibold dark:border-white/10 dark:bg-white/5"
+    >
+      {pending ? "Checking..." : "Submit"}
+    </button>
+  );
+}
+
+type ClueInputFieldProps = {
+  action: (state: { error?: string }, formData: FormData) => Promise<{ error?: string }>;
+};
+
+export default function ClueInputField({ action }: ClueInputFieldProps) {
+  const [state, formAction] = useFormState(action, {} as { error?: string });
   const [value, setValue] = useState("");
+  const [playerId, setPlayerId] = useState<string | undefined>(undefined);
 
-  const checkSubmission = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!value.trim()) return;
-    
-    onSubmit(value);
-  }
+  useEffect(() => {
+    setPlayerId(getOrCreatePlayerId());
+  }, []);
 
   return (
-    <input
-      type="text"
-      placeholder="Enter your answer here"
-      className="w-full max-w-md p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-      onKeyDown={(e) => {
-        if (e.key === "Enter") {
-          checkSubmission(e);
-        }
-      }}
-    />
+    <form action={formAction} className="mt-6 flex w-full flex-col items-center">
+      <input type="hidden" name="playerId" value={playerId ?? ""} />
+      <input
+        type="text"
+        name="answer"
+        placeholder="Enter your answer here"
+        className="w-full max-w-md rounded border border-black/10 bg-white/70 p-3 text-foreground outline-none dark:border-white/10 dark:bg-white/5"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <SubmitButton />
+      {state?.error ? <p className="mt-3 text-accent">{state.error}</p> : null}
+    </form>
   );
 }
