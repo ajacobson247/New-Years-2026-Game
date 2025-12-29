@@ -2,25 +2,12 @@
 
 import { useEffect } from "react";
 
+import { getOrCreatePlayerId } from "@/lib/client/player";
+
 type TrackEventProps = {
   type: "view_home" | "view_clue" | "finish";
   clue?: string;
 };
-
-function getOrCreatePlayerId() {
-  const key = "ny26_player_id";
-
-  try {
-    const existing = localStorage.getItem(key);
-    if (existing) return existing;
-
-    const created = crypto.randomUUID();
-    localStorage.setItem(key, created);
-    return created;
-  } catch {
-    return undefined;
-  }
-}
 
 export default function TrackEvent({ type, clue }: TrackEventProps) {
   useEffect(() => {
