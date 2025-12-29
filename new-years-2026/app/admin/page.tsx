@@ -33,6 +33,17 @@ function formatDuration(ms: number) {
   return hours > 0 ? `${hours}:${mm}:${ss}` : `${minutes}:${ss.padStart(2, "0")}`;
 }
 
+function displayTeamName(
+  playerId: string | null,
+  directName: string | null,
+  playerNameById: Map<string, string>
+) {
+  const trimmed = directName?.trim() ?? "";
+  if (trimmed) return trimmed;
+  if (playerId) return playerNameById.get(playerId) ?? playerId;
+  return "";
+}
+
 export default async function AdminPage() {
   const supabase = getSupabaseAdminClient();
 
@@ -59,6 +70,14 @@ export default async function AdminPage() {
     .map((e) => e.clue ?? "unknown");
 
   const finishers = events.filter((e) => e.type === "finish");
+
+  const playerNameById = new Map<string, string>();
+  for (const e of events) {
+    if (!e.player_id || !e.player_name) continue;
+    if (!playerNameById.has(e.player_id)) {
+      playerNameById.set(e.player_id, e.player_name);
+    }
+  }
 
   // Per-team time-to-reach each clue (from first view_home)
   const startByPlayer = new Map<string, number>();
@@ -105,6 +124,7 @@ export default async function AdminPage() {
 
       return {
         playerId,
+        playerName: playerNameById.get(playerId) ?? null,
         clue,
         reachedMs: start ? firstView - start : null,
         solveMs: firstCorrect ? firstCorrect - firstView : null,
@@ -184,7 +204,7 @@ export default async function AdminPage() {
                   className="border-b border-black/5 last:border-b-0 dark:border-white/5"
                 >
                   <td className="p-3 whitespace-nowrap">{row.clue}</td>
-                  <td className="p-3 whitespace-nowrap">{row.playerId}</td>
+                  <td className="p-3 whitespace-nowrap">{row.playerName ?? row.playerId}</td>
                   <td className="p-3 whitespace-nowrap">
                     {row.reachedMs === null ? "" : formatDuration(row.reachedMs)}
                   </td>
@@ -222,7 +242,7 @@ export default async function AdminPage() {
                 <td className="p-3 whitespace-nowrap">{e.type}</td>
                 <td className="p-3 whitespace-nowrap">{e.clue ?? ""}</td>
                 <td className="p-3 whitespace-nowrap">
-                  {e.player_name ?? e.player_id ?? ""}
+                  {displayTeamName(e.player_id, e.player_name, playerNameById)}
                 </td>
               </tr>
             ))}

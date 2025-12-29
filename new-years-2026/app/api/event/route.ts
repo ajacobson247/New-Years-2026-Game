@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 
 import { getSupabaseAnonServerClient } from "@/lib/supabase/anon-server";
+import { ensurePlayerIdCookie, getPlayerNameFromCookies } from "@/lib/server/playerCookies";
 
 type EventType = "view_home" | "view_clue" | "finish";
 
@@ -25,6 +26,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Missing type" }, { status: 400 });
   }
 
+  const cookiePlayerId = await ensurePlayerIdCookie();
+  const cookiePlayerName = await getPlayerNameFromCookies();
+  const playerId = cookiePlayerId ?? payload.playerId ?? null;
+  const playerName = cookiePlayerName ?? payload.playerName?.trim() ?? null;
+
   const headerBag = await headers();
   const userAgent = headerBag.get("user-agent") ?? null;
 
@@ -33,8 +39,8 @@ export async function POST(request: Request) {
   const { error } = await supabase.from("events").insert({
     type: payload.type,
     clue: payload.clue ?? null,
-    player_id: payload.playerId ?? null,
-    player_name: payload.playerName ?? null,
+    player_id: playerId,
+    player_name: playerName,
     user_agent: userAgent,
   });
 

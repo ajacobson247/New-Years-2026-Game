@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { getSupabaseAnonServerClient } from "@/lib/supabase/anon-server";
+import { ensurePlayerIdCookie, getPlayerNameFromCookies } from "@/lib/server/playerCookies";
 
 type SubmitConfig = {
   clue: string;
@@ -45,8 +46,8 @@ export async function submitClueAnswer(
     return { error: "Enter an answer." };
   }
 
-  const playerIdRaw = formData.get("playerId");
-  const playerId = typeof playerIdRaw === "string" && playerIdRaw ? playerIdRaw : null;
+  const playerId = await ensurePlayerIdCookie();
+  const playerName = await getPlayerNameFromCookies();
 
   const correct = normalizeAnswer(answer) === normalizeAnswer(String(expected));
 
@@ -58,6 +59,7 @@ export async function submitClueAnswer(
     type: "answer",
     clue: config.clue,
     player_id: playerId,
+    player_name: playerName,
     user_agent: userAgent,
     is_correct: correct,
   });

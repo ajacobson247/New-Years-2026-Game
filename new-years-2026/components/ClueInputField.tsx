@@ -1,9 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
-
-import { getOrCreatePlayerId } from "@/lib/client/player";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -25,15 +23,9 @@ type ClueInputFieldProps = {
 export default function ClueInputField({ action }: ClueInputFieldProps) {
   const [state, formAction] = useFormState(action, {} as { error?: string });
   const [value, setValue] = useState("");
-  const [playerId, setPlayerId] = useState<string | undefined>(undefined);
-
-  useEffect(() => {
-    setPlayerId(getOrCreatePlayerId());
-  }, []);
 
   return (
     <form action={formAction} className="mt-6 flex w-full flex-col items-center">
-      <input type="hidden" name="playerId" value={playerId ?? ""} />
       <input
         type="text"
         name="answer"
