@@ -170,7 +170,7 @@ export default async function AdminPage() {
               <th className="p-3">Wrong</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody> 
             {teamClueRows.length === 0 ? (
               <tr>
                 <td className="p-3 text-muted" colSpan={5}>
