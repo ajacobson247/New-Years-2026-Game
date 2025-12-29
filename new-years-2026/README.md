@@ -27,6 +27,19 @@ This app includes:
 - Vercel Web Analytics for overall traffic and unique visitors.
 - A simple Supabase-backed event log (page scans/views) plus an `/admin` dashboard.
 
+### Clues (answers + riddles)
+
+Answers are configured via `CLUE_ANSWERS_JSON`.
+
+Riddle text can optionally be configured via `CLUE_RIDDLES_JSON`.
+
+Example:
+
+```bash
+CLUE_ANSWERS_JSON={"clue_1":"under the lamp","clue_2":"behind the painting"}
+CLUE_RIDDLES_JSON={"clue_1":{"heading":"Clue 1: The Journey Begins","bodyLines":["Line 1","Line 2"]}}
+```
+
 ### Supabase setup
 
 1. Create a Supabase project.
