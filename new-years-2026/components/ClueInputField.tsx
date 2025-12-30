@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import React, { useActionState, useState } from "react";
 
-function SubmitButton() {
-  const { pending } = useFormStatus();
+type ActionState = { error?: string };
+
+function SubmitButton({ pending }: { pending: boolean }) {
   return (
     <button
       type="submit"
@@ -17,11 +17,14 @@ function SubmitButton() {
 }
 
 type ClueInputFieldProps = {
-  action: (state: { error?: string }, formData: FormData) => Promise<{ error?: string }>;
+  action: (state: ActionState, formData: FormData) => Promise<ActionState>;
 };
 
 export default function ClueInputField({ action }: ClueInputFieldProps) {
-  const [state, formAction] = useFormState(action, {} as { error?: string });
+  const [state, formAction, pending] = useActionState<ActionState, FormData>(
+    action,
+    {} satisfies ActionState
+  );
   const [value, setValue] = useState("");
 
   return (
@@ -34,7 +37,7 @@ export default function ClueInputField({ action }: ClueInputFieldProps) {
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
-      <SubmitButton />
+      <SubmitButton pending={pending} />
       {state?.error ? <p className="mt-3 text-accent">{state.error}</p> : null}
     </form>
   );
