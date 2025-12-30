@@ -36,7 +36,7 @@ export default async function Home() {
               By accepting to play, you will receive a clue that will set you on a riddle-filled journey.
             </p>
             <p className="mb-6">
-              <strong>BUT</strong>, it's important to try and keep the game a secret from others!
+              <strong>BUT</strong>, it’s important to try and keep the game a secret from others!
             </p>
 
             {resumeHref ? (
@@ -49,7 +49,7 @@ export default async function Home() {
                 <p className="mb-3">
                   {resumeLabel ? (
                     <>
-                      You're currently on <strong>{resumeLabel}</strong>.
+                      You’re currently on <strong>{resumeLabel}</strong>.
                     </>
                   ) : (
                     <>Looks like you were mid-game.</>
