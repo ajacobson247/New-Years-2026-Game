@@ -19,11 +19,11 @@ export default function CluePage({ config }: { config: ClueConfig }) {
 
       <div className="flex flex-1 items-center justify-center overflow-hidden">
         <div className="flex w-full flex-col items-center overflow-hidden">
-          <h1 className="text-center font-serif text-3xl leading-tight tracking-wide sm:text-5xl">
+          <h1 className="text-center font-serif font-semibold text-3xl leading-tight tracking-wide sm:text-5xl">
             {config.heading}
           </h1>
 
-          <div className="mt-4 w-full max-h-[46svh] overflow-auto text-center text-base leading-snug sm:text-2xl">
+          <div className="mt-4 w-full max-h-[46svh] overflow-auto text-center text-base leading-snug sm:text-3xl">
             {config.bodyLines.map((line, index) => (
               <p key={index} className="mb-2 last:mb-0">
                 {line}
@@ -32,7 +32,7 @@ export default function CluePage({ config }: { config: ClueConfig }) {
           </div>
 
           {config.question ? (
-            <p className="mt-6 mb-4text-center text-base italic sm:text-xl">
+            <p className="mt-6 mb-4text-center text-base italic sm:text-2xl">
               {config.question}
             </p>
           ) : null}

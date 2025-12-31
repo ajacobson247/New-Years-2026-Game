@@ -23,11 +23,11 @@ export default async function Home() {
       <TrackEvent type="view_home" />
       <div className="flex flex-1 items-center justify-center overflow-hidden">
         <div className="flex w-full flex-col items-center overflow-hidden">
-          <h1 className="text-center font-serif text-4xl tracking-wide sm:text-6xl">
+          <h1 className="text-center font-serif font-semibold text-4xl tracking-wide drop-shadow-md sm:text-6xl">
             Happy New Year 2026! 
           </h1>
           <h2 className="text-center font-serif py-6 text-2xl tracking-wide sm:text-3xl">Shh... A secret game is going on.</h2>
-          <div className="mt-4 w-full max-h-[46svh] overflow-auto text-center text-base leading-snug sm:text-2xl">
+          <div className="mt-4 w-full max-h-[46svh] overflow-auto text-center text-lg leading-snug sm:text-3xl">
             <p className="mb-3">
               Congratulations! You have discovered our hidden game.
             </p>

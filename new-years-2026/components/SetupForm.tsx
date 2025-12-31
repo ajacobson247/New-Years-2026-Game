@@ -1,6 +1,6 @@
 "use client";
-
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 
 type SetupState = { error?: string };
 
@@ -22,7 +22,7 @@ function SubmitButton() {
 }
 
 export default function SetupForm({ action }: SetupFormProps) {
-  const [state, formAction] = useFormState(action, {});
+  const [state, formAction] = useActionState(action, {});
 
   return (
     <form action={formAction} className="flex flex-col items-center">
@@ -30,7 +30,7 @@ export default function SetupForm({ action }: SetupFormProps) {
         type="text"
         name="teamName"
         placeholder="Enter your team name"
-        className="p-2 border border-gray-300 rounded w-64"
+        className="w-64 rounded border border-gray-300 p-2 text-lg"
         autoComplete="organization"
         maxLength={64}
         required
