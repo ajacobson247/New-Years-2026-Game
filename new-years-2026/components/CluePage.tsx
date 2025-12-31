@@ -3,6 +3,7 @@ import ClueInputField from "@/components/ClueInputField";
 import { submitClueAnswer } from "@/lib/actions/submitClueAnswer";
 import type { ClueConfig } from "@/lib/clues";
 
+
 export default function CluePage({ config }: { config: ClueConfig }) {
   const showAnswerInput = config.showAnswerInput !== false;
   const action = showAnswerInput
@@ -17,7 +18,7 @@ export default function CluePage({ config }: { config: ClueConfig }) {
       <TrackEvent type="view_clue" clue={config.clue} />
 
       <div className="flex flex-1 items-center justify-center overflow-hidden">
-        <div className="flex w-full max-w-md flex-col items-center overflow-hidden">
+        <div className="flex w-full flex-col items-center overflow-hidden">
           <h1 className="text-center font-serif text-3xl leading-tight tracking-wide sm:text-5xl">
             {config.heading}
           </h1>
@@ -30,8 +31,13 @@ export default function CluePage({ config }: { config: ClueConfig }) {
             ))}
           </div>
 
+          {config.question ? (
+            <p className="mt-6 mb-4text-center text-base italic sm:text-xl">
+              {config.question}
+            </p>
+          ) : null}
           {showAnswerInput && action ? (
-            <div className="mt-4 w-full">
+            <div className="w-full">
               <ClueInputField action={action} />
             </div>
           ) : null}

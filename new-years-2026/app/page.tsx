@@ -19,26 +19,27 @@ export default async function Home() {
   const resumeLabel = clueNumber ? `Clue ${clueNumber}` : null;
 
   return (
-    <div className="flex h-svh flex-col overflow-hidden bg-background px-4 py-6 font-sans text-foreground">
+    <div className="flex h-svh flex-col overflow-hidden bg-background px-2 py-3 font-sans text-foreground">
       <TrackEvent type="view_home" />
-
       <div className="flex flex-1 items-center justify-center overflow-hidden">
-        <div className="flex w-full max-w-md flex-col items-center overflow-hidden">
+        <div className="flex w-full flex-col items-center overflow-hidden">
           <h1 className="text-center font-serif text-4xl tracking-wide sm:text-6xl">
-            Happy New Year 2026!
+            Happy New Year 2026! 
           </h1>
-
+          <h2 className="text-center font-serif py-6 text-2xl tracking-wide sm:text-3xl">Shh... A secret game is going on.</h2>
           <div className="mt-4 w-full max-h-[46svh] overflow-auto text-center text-base leading-snug sm:text-2xl">
             <p className="mb-3">
-              Congratulations! You have discovered the first clue in our hidden game.
+              Congratulations! You have discovered our hidden game.
             </p>
             <p className="mb-3">
-              By accepting to play, you will receive a clue that will set you on a riddle-filled journey.
+              By accepting to play, you’ll receive your first clue — there are <strong>6 clues</strong> in the game total.
+            </p>
+            <p className="mb-6">
+              The first <strong>4</strong> teams to finish and arrive back win prizes. Everyone after that will receive a consolation prize.
             </p>
             <p className="mb-6">
               <strong>BUT</strong>, it’s important to try and keep the game a secret from others!
             </p>
-
             {resumeHref ? (
               <>
                 {teamName ? (
@@ -59,7 +60,7 @@ export default async function Home() {
                   Click <Link href={resumeHref} className="underline">here</Link> to resume.
                 </p>
                 <p>
-                  Or click <Link href="/setup" className="underline">here</Link> to change team name.
+                  Or click <Link href="/setup" className="underline">here</Link> to change name.
                 </p>
               </>
             ) : (
