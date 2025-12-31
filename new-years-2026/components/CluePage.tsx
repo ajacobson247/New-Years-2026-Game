@@ -23,7 +23,7 @@ export default function CluePage({ config }: { config: ClueConfig }) {
             {config.heading}
           </h1>
 
-          <div className="mt-4 w-full max-h-[46svh] overflow-auto text-center text-base text-muted font-semibold leading-snug sm:text-3xl">
+          <div className="mt-4 w-full max-h-[46svh] overflow-auto text-center text-base text-muted font-semibold leading-snug text-3xl">
             {config.bodyLines.map((line, index) => (
               <p key={index} className="mb-2 last:mb-0">
                 {line}
